@@ -1,0 +1,280 @@
+/* ==========================================================
+ *  侧边栏「时光问候」卡片样式
+ *  自动适配主题深色模式（html[data-theme="dark"]）
+ * ========================================================== */
+
+.ac-card {
+  padding: 1rem 1.1rem 1.2rem;
+  overflow: hidden;
+}
+
+/* ---------- 头部问候 ---------- */
+.ac-card .ac-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.ac-card .ac-greet {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.ac-card .ac-greet-text {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--anzhiyu-main, #8a7ffb);
+  white-space: nowrap;
+}
+
+.ac-card .ac-wave {
+  font-size: 1rem;
+  display: inline-block;
+  animation: ac-wave 2.4s ease-in-out infinite;
+  transform-origin: 70% 70%;
+}
+
+@keyframes ac-wave {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  70% { transform: rotate(14deg); }
+  80% { transform: rotate(-8deg); }
+  90% { transform: rotate(10deg); }
+}
+
+.ac-card .ac-clock {
+  text-align: right;
+  line-height: 1.25;
+  flex-shrink: 0;
+}
+
+.ac-card .ac-time {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+  color: var(--anzhiyu-text, #4c4948);
+}
+
+.ac-card .ac-date {
+  display: block;
+  font-size: 0.72rem;
+  opacity: 0.62;
+  color: var(--anzhiyu-text, #4c4948);
+}
+
+/* ---------- IP 归属地 ---------- */
+.ac-card .ac-ip {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  background: linear-gradient(120deg, rgba(138, 127, 251, 0.10), rgba(138, 127, 251, 0.03));
+  border: 1px solid rgba(138, 127, 251, 0.16);
+}
+
+.ac-card .ac-ip-line {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--anzhiyu-text, #4c4948);
+}
+
+.ac-card .ac-ip-line > svg {
+  color: var(--anzhiyu-main, #8a7ffb);
+  flex-shrink: 0;
+}
+
+.ac-card .ac-nav > svg { display: block; }
+
+.ac-card .ac-ip-text b {
+  color: var(--anzhiyu-main, #8a7ffb);
+  font-weight: 700;
+}
+
+.ac-card .ac-ip-extra {
+  margin-top: 0.2rem;
+  padding-left: 1.25rem;
+  font-size: 0.7rem;
+  opacity: 0.55;
+  letter-spacing: 0.2px;
+  color: var(--anzhiyu-text, #4c4948);
+  word-break: break-all;
+}
+
+/* ---------- 节假日标签 ---------- */
+.ac-card .ac-fest {
+  margin-top: 0.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.ac-card .ac-tag {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+.ac-card .ac-tag-h {
+  background: rgba(255, 92, 92, 0.13);
+  color: #e5484d;
+}
+
+.ac-card .ac-tag-w {
+  background: rgba(66, 133, 244, 0.13);
+  color: #3b74d6;
+}
+
+.ac-card .ac-tag-n {
+  background: rgba(138, 127, 251, 0.13);
+  color: var(--anzhiyu-main, #8a7ffb);
+}
+
+.ac-card .ac-tip {
+  width: 100%;
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  opacity: 0.62;
+  color: var(--anzhiyu-text, #4c4948);
+}
+
+/* ---------- 日历 ---------- */
+.ac-card .ac-cal { margin-top: 0.8rem; }
+
+.ac-card .ac-cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.45rem;
+}
+
+.ac-card .ac-cal-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--anzhiyu-text, #4c4948);
+}
+
+.ac-card .ac-nav {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+  color: var(--anzhiyu-text, #4c4948);
+  opacity: 0.6;
+  transition: all 0.2s;
+  font-size: 0.8rem;
+}
+
+.ac-card .ac-nav:hover {
+  opacity: 1;
+  background: rgba(138, 127, 251, 0.12);
+  color: var(--anzhiyu-main, #8a7ffb);
+}
+
+.ac-card .ac-cal-week,
+.ac-card .ac-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+
+.ac-card .ac-cal-week span {
+  font-size: 0.7rem;
+  opacity: 0.55;
+  padding: 0.15rem 0;
+  color: var(--anzhiyu-text, #4c4948);
+}
+
+.ac-card .ac-weekend { color: #e5484d !important; opacity: 0.75 !important; }
+
+.ac-card .ac-cell {
+  position: relative;
+  padding: 0.22rem 0;
+  font-size: 0.75rem;
+  border-radius: 6px;
+  color: var(--anzhiyu-text, #4c4948);
+  transition: background 0.18s;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ac-card .ac-cell em { font-style: normal; }
+
+.ac-card .ac-empty { visibility: hidden; }
+
+.ac-card .ac-cell.ac-holiday {
+  background: rgba(255, 92, 92, 0.12);
+  color: #e5484d;
+  font-weight: 600;
+}
+
+.ac-card .ac-cell.ac-workday {
+  background: rgba(66, 133, 244, 0.10);
+  color: #3b74d6;
+}
+
+.ac-card .ac-cell.ac-today {
+  background: var(--anzhiyu-main, #8a7ffb);
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(138, 127, 251, 0.4);
+}
+
+.ac-card .ac-cell.ac-today.ac-holiday {
+  background: #e5484d;
+  box-shadow: 0 2px 8px rgba(229, 72, 77, 0.4);
+}
+
+.ac-card .ac-mark {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  font-size: 0.55rem;
+  font-style: normal;
+  line-height: 1;
+  padding: 1px;
+  border-radius: 3px;
+  background: #3b74d6;
+  color: #fff;
+  transform: scale(0.85);
+}
+
+.ac-card .ac-mark-h { background: #e5484d; }
+
+/* ---------- 深色模式 ---------- */
+html[data-theme="dark"] .ac-card .ac-ip {
+  background: linear-gradient(120deg, rgba(195, 182, 255, 0.14), rgba(195, 182, 255, 0.04));
+  border-color: rgba(195, 182, 255, 0.18);
+}
+
+html[data-theme="dark"] .ac-card .ac-tag-h { background: rgba(255, 122, 122, 0.18); color: #ff8a8a; }
+html[data-theme="dark"] .ac-card .ac-tag-w { background: rgba(120, 170, 255, 0.18); color: #8ab4ff; }
+html[data-theme="dark"] .ac-card .ac-tag-n { background: rgba(195, 182, 255, 0.18); color: #c3b6ff; }
+html[data-theme="dark"] .ac-card .ac-weekend { color: #ff8a8a !important; }
+html[data-theme="dark"] .ac-card .ac-cell.ac-holiday { background: rgba(255, 122, 122, 0.18); color: #ff8a8a; }
+html[data-theme="dark"] .ac-card .ac-cell.ac-workday { background: rgba(120, 170, 255, 0.16); color: #8ab4ff; }
+
+/* ---------- 减少动效 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ac-card .ac-wave { animation: none; }
+  .ac-card .ac-cell { transition: none; }
+}
+
+/* ---------- 侧边栏窄（平板）时收紧 ---------- */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+  .ac-card .ac-greet-text { font-size: 1.05rem; }
+  .ac-card .ac-time { font-size: 0.95rem; }
+}

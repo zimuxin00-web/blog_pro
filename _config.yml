@@ -1,0 +1,144 @@
+# ==========================================
+#  Hexo 主配置
+#  部署前必改 3 处：url / 站点信息 / 见下方【部署区】
+# ==========================================
+
+# ---------- 站点信息 ----------
+title: 书技suket
+subtitle: ''
+description: '一个记录生活、技术与奇思妙想的小站'
+keywords:
+  - 个人博客
+  - 生活
+  - 技术
+author: 站长
+language: zh-CN
+timezone: Asia/Shanghai
+
+# ---------- 网址 ----------
+## 改成你自己的域名（带 https），站内 RSS、sitemap、OG 都依赖它
+url: https://maoniang.cloud
+root: /
+## 文章固定链接：用 Hexo 默认的「日期/标题」结构。
+## 这样开 post_asset_folder + postAsset 后，图片放进「与文章同名」的文件夹，
+## 正文里写 ![](图片名.png) 就能正确显示（Typora 里拖图即所见即所得）。
+permalink: :year/:month/:day/:title/
+permalink_defaults:
+pretty_urls:
+  trailing_index: true
+  trailing_html: true
+
+# ---------- 目录 ----------
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render:
+
+# ---------- 写作 ----------
+new_post_name: :title.md
+default_layout: post
+titlecase: false
+external_link:
+  enable: true
+  field: site
+  exclude: ''
+filename_case: 0
+render_drafts: false
+post_asset_folder: true        # 每篇文章自动生成同名资源文件夹，图片直接丢进去，正文写 ![](图片.png)
+relative_link: false
+future: true
+syntax_highlighter: highlight.js
+highlight:
+  line_number: true
+  auto_detect: false
+  tab_replace: ''
+  wrap: true
+  hljs: false
+prismjs:
+  preprocess: true
+  line_number: true
+  tab_replace: ''
+
+# ---------- 首页 ----------
+index_generator:
+  path: ''
+  per_page: 8
+  order_by: -date
+
+# ---------- 分类与标签 ----------
+default_category: uncategorized
+category_map:
+tag_map:
+
+# ---------- 日期格式 ----------
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+updated_option: 'mtime'
+
+# ---------- 分页 ----------
+per_page: 8
+pagination_dir: page
+
+# ---------- 主题 ----------
+theme: anzhiyu
+
+# ---------- 搜索（本地搜索，无需外部服务） ----------
+search:
+  path: search.xml
+  field: post
+  content: true
+  template: ./source/search.xml
+
+# ---------- 字数统计 ----------
+wordcount:
+  enable: true
+
+# ---------- Feed / Sitemap ----------
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+  content: true
+  content_limit:
+  content_limit_delim: ' '
+  order_by: -date
+sitemap:
+  path: sitemap.xml
+  tags: true
+  categories: true
+
+# ---------- Markdown 渲染 ----------
+marked:
+  gfm: true
+  pedantic: false
+  breaks: true
+  smartLists: true
+  smartypants: true
+  mangle: false
+  headerIds: true
+  prependRoot: true
+  # 让「post_asset_folder」里的图片用普通 Markdown 语法 ![](图片.png) 即可正确显示
+  # （这样在 Typora 等所见即所得编辑器里图片能直接预览，不必用 {% asset_img %} 标签）
+  postAsset: true
+
+# ---------- 部署区 ----------
+## 方式一（推荐）：本地生成，脚本 rsync 到服务器 —— 见 deploy/deploy.sh
+## 方式二：hexo-deployer-git 推送到 Git 仓库，服务器 webhook 拉取
+## 方式二需要时取消注释并安装 npm i hexo-deployer-git --save
+# deploy:
+#   type: git
+#   repo: git@your-server:/home/git/blog.git
+#   branch: main
+#   message: "站点更新: {{ now('YYYY-MM-DD HH:mm:ss') }}"
+
+# ---------- 本地预览 ----------
+server:
+  port: 4000
+  compress: true
+  headers:
+    Cache-Control: max-age=0

@@ -1,0 +1,531 @@
+/* ==========================================================
+ *  音乐馆  ——  桌面双栏 / 手机全屏播放器
+ * ========================================================== */
+
+#music-hall {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--anzhiyu-card-bg, #fff);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* 模糊渐变背景 */
+#music-hall .mh-bg {
+  position: absolute;
+  inset: -30px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(46px) saturate(1.5);
+  opacity: 0.35;
+  transform: scale(1.15);
+  transition: background-image 0.6s ease;
+  z-index: 0;
+}
+
+#music-hall .mh-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 1.6rem;
+  padding: 1.4rem;
+  align-items: flex-start;
+}
+
+/* ---------- 歌单切换 ---------- */
+#music-hall .mh-tabs {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  display: flex;
+  gap: 0.35rem;
+  z-index: 3;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 60%;
+}
+
+#music-hall .mh-tab {
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  background: rgba(138, 127, 251, 0.10);
+  color: var(--anzhiyu-text, #4c4948);
+  transition: all 0.2s;
+}
+
+#music-hall .mh-tab:hover { background: rgba(138, 127, 251, 0.22); }
+
+#music-hall .mh-tab.on {
+  background: var(--anzhiyu-main, #8a7ffb);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ---------- 左：唱片 ---------- */
+#music-hall .mh-stage {
+  flex: 0 0 auto;
+  width: 300px;
+  text-align: center;
+}
+
+#music-hall .mh-vinyl { padding: 0.6rem 0 0.4rem; }
+
+#music-hall .mh-disc {
+  position: relative;
+  width: 190px;
+  height: 190px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #1b1b1f;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.28), inset 0 0 0 6px rgba(255, 255, 255, 0.06);
+  animation: mh-spin 22s linear infinite;
+  animation-play-state: paused;
+}
+
+#music-hall.is-playing .mh-disc { animation-play-state: running; }
+
+@keyframes mh-spin { to { transform: rotate(360deg); } }
+
+#music-hall .mh-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#music-hall .mh-hole {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f5f5f7 0 26%, #d9d9de 27% 32%, transparent 33%);
+  box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- 歌曲信息 ---------- */
+#music-hall .mh-title {
+  margin-top: 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--anzhiyu-text, #4c4948);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#music-hall .mh-artist {
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+  opacity: 0.6;
+  color: var(--anzhiyu-text, #4c4948);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 歌词 */
+#music-hall .mh-lyric {
+  margin-top: 0.8rem;
+  height: 76px;
+  overflow: hidden;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: var(--anzhiyu-text, #4c4948);
+}
+
+#music-hall .mh-lrc-line {
+  margin: 0;
+  opacity: 0.4;
+  transition: opacity 0.3s, transform 0.3s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#music-hall .mh-lrc-line.on {
+  opacity: 1;
+  font-weight: 700;
+  color: var(--anzhiyu-main, #8a7ffb);
+  transform: scale(1.04);
+}
+
+/* ---------- 进度条 ---------- */
+#music-hall .mh-prog {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+}
+
+#music-hall .mh-cur,
+#music-hall .mh-total {
+  font-size: 0.72rem;
+  opacity: 0.6;
+  font-variant-numeric: tabular-nums;
+  color: var(--anzhiyu-text, #4c4948);
+  min-width: 38px;
+}
+
+#music-hall .mh-bar {
+  position: relative;
+  flex: 1;
+  height: 5px;
+  border-radius: 4px;
+  background: rgba(128, 128, 140, 0.22);
+  cursor: pointer;
+}
+
+#music-hall .mh-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-radius: 4px;
+  background: var(--anzhiyu-main, #8a7ffb);
+}
+
+#music-hall .mh-bar-dot {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--anzhiyu-main, #8a7ffb);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+#music-hall .mh-prog:hover .mh-bar-dot { opacity: 1; }
+
+/* ---------- 控制按钮 ---------- */
+#music-hall .mh-ctrl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+
+#music-hall .mh-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  color: var(--anzhiyu-text, #4c4948);
+  opacity: 0.75;
+  transition: all 0.2s;
+}
+
+#music-hall .mh-btn > svg { display: block; }
+
+#music-hall .mh-btn:hover {
+  opacity: 1;
+  background: rgba(138, 127, 251, 0.14);
+  color: var(--anzhiyu-main, #8a7ffb);
+}
+
+#music-hall .mh-play-btn {
+  width: 52px;
+  height: 52px;
+  font-size: 1.25rem;
+  background: var(--anzhiyu-main, #8a7ffb);
+  color: #fff;
+  opacity: 1;
+  box-shadow: 0 4px 14px rgba(138, 127, 251, 0.42);
+}
+
+#music-hall .mh-play-btn:hover {
+  background: var(--anzhiyu-main, #8a7ffb);
+  color: #fff;
+  transform: scale(1.06);
+}
+
+/* ---------- 右：列表 ---------- */
+#music-hall .mh-side {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 520px;
+}
+
+#music-hall .mh-searchwrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 22px;
+  background: rgba(128, 128, 140, 0.10);
+  margin-bottom: 0.6rem;
+}
+
+#music-hall .mh-searchwrap > svg { opacity: 0.5; flex-shrink: 0; }
+
+#music-hall .mh-search {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.85rem;
+  color: var(--anzhiyu-text, #4c4948);
+}
+
+#music-hall .mh-listbox { flex: 1; overflow-y: auto; }
+
+#music-hall .mh-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.3rem 0 0;
+}
+
+#music-hall .mh-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--anzhiyu-text, #4c4948);
+  transition: background 0.18s;
+}
+
+#music-hall .mh-item:hover { background: rgba(138, 127, 251, 0.10); }
+
+#music-hall .mh-item.on {
+  background: rgba(138, 127, 251, 0.16);
+  color: var(--anzhiyu-main, #8a7ffb);
+  font-weight: 600;
+}
+
+#music-hall .mh-no {
+  width: 22px;
+  text-align: right;
+  opacity: 0.45;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+#music-hall .mh-iname {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#music-hall .mh-iartist {
+  width: 32%;
+  min-width: 0;
+  text-align: right;
+  opacity: 0.5;
+  font-size: 0.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#music-hall .mh-empty {
+  padding: 1.5rem;
+  text-align: center;
+  opacity: 0.5;
+  font-size: 0.85rem;
+  list-style: none;
+  color: var(--anzhiyu-text, #4c4948);
+}
+
+/* ---------- APlayer 引擎容器（不可见） ---------- */
+#music-hall .mh-engine {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  left: -9999px;
+}
+
+#music-hall .mh-engine-visible {
+  position: static;
+  width: auto;
+  height: auto;
+  opacity: 1;
+  pointer-events: auto;
+  overflow: visible;
+  padding: 1rem;
+}
+
+#music-hall .mh-mask { display: none; }
+
+/* ---------- 轻提示 ---------- */
+.mh-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 15%;
+  transform: translateX(-50%) translateY(10px);
+  padding: 0.5rem 1.1rem;
+  border-radius: 22px;
+  background: rgba(30, 30, 36, 0.9);
+  color: #fff;
+  font-size: 0.82rem;
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.28s;
+  pointer-events: none;
+}
+
+.mh-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ---------- 深色模式 ---------- */
+html[data-theme="dark"] #music-hall { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); }
+html[data-theme="dark"] #music-hall .mh-bg { opacity: 0.28; }
+html[data-theme="dark"] #music-hall .mh-disc { box-shadow: 0 8px 26px rgba(0, 0, 0, 0.5), inset 0 0 0 6px rgba(255, 255, 255, 0.06); }
+
+
+/* ==========================================================
+ *  手机端：全屏沉浸式播放器
+ * ========================================================== */
+@media screen and (max-width: 768px) {
+  /* 音乐馆页面：播放器当主页，把主题的页头大 banner 收掉
+   * :has() 选 body 下含 #music-hall 的情况，其他页不受影响 */
+  body:has(#music-hall) #page-header { display: none; }
+  body:has(#music-hall) { padding-top: 0; }
+
+  #music-hall {
+    margin: 0 -0.5rem;
+    border-radius: 0;
+    min-height: auto;
+  }
+
+  #music-hall .mh-bg { opacity: 0.55; }
+
+  #music-hall .mh-inner {
+    flex-direction: column;
+    gap: 0;
+    padding: 0.5rem 1rem calc(0.5rem + env(safe-area-inset-bottom));
+    min-height: calc(100dvh - 54px - env(safe-area-inset-bottom));
+  }
+
+  #music-hall .mh-tabs {
+    position: static;
+    max-width: 100%;
+    justify-content: center;
+    margin-bottom: 0.8rem;
+  }
+
+  #music-hall .mh-stage {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  #music-hall .mh-vinyl {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0 1rem;
+  }
+
+  /* 唱片大小跟随屏幕，避免小屏撑破 */
+  #music-hall .mh-disc {
+    width: min(52vw, 210px);
+    height: min(52vw, 210px);
+  }
+
+  #music-hall .mh-hole {
+    width: 20%;
+    height: 20%;
+    margin: -10% 0 0 -10%;
+  }
+
+  #music-hall .mh-title { font-size: 1.2rem; margin-top: 0.3rem; }
+  #music-hall .mh-artist { font-size: 0.85rem; }
+
+  #music-hall .mh-lyric {
+    height: 60px;
+    font-size: 0.85rem;
+    margin-top: 0.7rem;
+  }
+
+  /* 进度条：加大触控区域（不推到最底，让控件紧跟歌词，避免被 Tab 栏挡） */
+  #music-hall .mh-prog { margin-top: 0.7rem; padding-top: 0; }
+  #music-hall .mh-bar { height: 6px; }
+  #music-hall .mh-bar-dot { opacity: 1; width: 14px; height: 14px; margin: -7px 0 0 -7px; }
+
+  /* 大号控制键 */
+  #music-hall .mh-ctrl {
+    gap: 1.4rem;
+    margin: 0.9rem 0 0.3rem;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  #music-hall .mh-btn { width: 46px; height: 46px; }
+  #music-hall .mh-ctrl .mh-btn > svg { width: 22px; height: 22px; }
+
+  #music-hall .mh-play-btn {
+    width: 66px;
+    height: 66px;
+    box-shadow: 0 6px 20px rgba(138, 127, 251, 0.5);
+  }
+
+  #music-hall .mh-play-btn > svg { width: 30px; height: 30px; }
+
+  /* 列表变成底部抽屉 */
+  #music-hall .mh-side {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    max-height: 68vh;
+    background: var(--anzhiyu-card-bg, #fff);
+    border-radius: 18px 18px 0 0;
+    padding: 0.9rem 1rem calc(1rem + env(safe-area-inset-bottom));
+    box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.18);
+    transform: translateY(101%);
+    transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  #music-hall.mh-list-open .mh-side { transform: translateY(0); }
+
+  #music-hall .mh-listbox { max-height: 52vh; }
+
+  #music-hall .mh-iartist { display: none; }
+
+  #music-hall .mh-mask {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  #music-hall.mh-list-open .mh-mask { opacity: 1; pointer-events: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #music-hall .mh-disc { animation: none; }
+  #music-hall .mh-side { transition: none; }
+}

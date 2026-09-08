@@ -1,0 +1,183 @@
+# ==========================================
+#  安知鱼主题覆盖配置
+#  优先级高于 themes/anzhiyu/_config.yml，升级主题不会被覆盖
+#  只有这里写过的项才生效 —— 想改什么就加什么
+# ==========================================
+
+# ---------- 导航菜单 ----------
+menu:
+  文章:
+    隧道: /archives/ || anzhiyu-icon-box-archive
+    分类: /categories/ || anzhiyu-icon-shapes
+    标签: /tags/ || anzhiyu-icon-tags
+  我的:
+    音乐馆: /music/ || anzhiyu-icon-music
+    关于: /about/ || anzhiyu-icon-paper-plane
+    留言板: /comments/ || anzhiyu-icon-envelope
+    随便逛逛: javascript:toRandomPost() || anzhiyu-icon-compass
+
+# ---------- 头像与社交 ----------
+avatar:
+  img: /img/avatar_yae.png
+  effect: true
+
+social:
+  Github: https://github.com/ || anzhiyu-icon-github
+  BiliBili: https://space.bilibili.com/ || anzhiyu-icon-bilibili
+  Mail: mailto:your@email.com || anzhiyu-icon-envelope
+  RSS: /atom.xml || anzhiyu-icon-rss
+
+# ---------- 打字特效（你喜欢的那个） ----------
+subtitle:
+  enable: true          # 首页副标题总开关
+  effect: true          # true = 逐字打字机效果
+  startDelay: 300
+  typeSpeed: 120        # 打字速度（毫秒/字），越小越快
+  backSpeed: 40
+  loop: true            # 循环播放
+  source: false         # false = 不调用外部一言 API，用下面自己的句子（更快更可控）
+  sub:
+    - 生活明朗&#44;万物可爱&#44;人间值得&#44;未来可期.
+    - 保持热爱&#44;奔赴山海.
+    - 慢慢来&#44;比较快.
+    - 愿你所愿&#44;皆能如愿.
+
+# ---------- 首页顶部 ----------
+home_top:
+  enable: true
+  timemode: date
+  title: 书技suket
+  subTitle: 欢迎光临。
+  siteText: 书技suket
+  default_descr: 一个记录生活、技术与奇思妙想的小站
+  swiper:
+    enable: false
+  banner:
+    tips: 新站开张
+    title: 书技suket
+    link: /about/
+
+# ---------- 主题配色 ----------
+theme_color:
+  enable: true
+  main: "#8a7ffb"        # 主色调：淡紫
+  dark_main: "#c3b6ff"   # 深色模式主色
+  paginator: "#8a7ffb"
+
+# ---------- 背景与封面 ----------
+default_top_img: /img/top-bg.svg
+index_top_img_height: 60vh
+
+cover:
+  enable: true
+  position: both
+  default_cover:
+    - /img/default_cover.svg
+
+# ---------- 深色模式粒子星空 ----------
+universe:
+  enable: true
+
+# 气泡效果（页面卡片顶部升起气泡）
+bubble:
+  enable: true
+
+# ---------- 本地搜索 ----------
+local_search:
+  enable: true
+  preload: true
+
+# ---------- 暗色模式 ----------
+darkmode:
+  enable: true
+  button: true
+  autoChangeMode: false   # true = 跟随系统时间自动切换
+
+# ---------- 加载动画 ----------
+preloader:
+  enable: true
+  source: 3
+  avatar: /img/avatar_yae.png
+
+# ---------- 侧边栏 ----------
+aside:
+  enable: true
+  hide: false
+  button: true
+  # 关掉主题自带的「公众号」翻转卡片（card_weixin）
+  card_weixin:
+    enable: false
+
+# ---------- 页脚 ----------
+footer:
+  owner:
+    enable: true
+    since: 2026
+  custom_text: 书技suket
+  copyright: true
+
+# ---------- 评论 ----------
+## 静态站没有自带后台，评论需要用第三方服务。
+## 推荐 Twikoo（免费、国内快、数据存自己的 MongoDB/云函数）
+## 申请到环境 ID 后，把下面 use 改成 Twikoo 并填 envId 即可
+comments:
+  use:                     # 留空 = 暂不启用评论
+  # use: Twikoo
+  text: true
+  lazyload: true
+  count: false
+twikoo:
+  envId:                   # 例如 https://twikoo.yourdomain.com
+  region:
+  visitor: true
+
+# ---------- 左下角音乐球 ----------
+## 服务器在国外/不想加载网易云外链可关掉，能省几百 KB
+nav_music:
+  enable: false
+  id: 8152976493
+  server: netease
+  volume: 0.7
+
+# ---------- 自定义注入（视频背景在这里生效） ----------
+inject:
+  head:
+    - <link rel="stylesheet" href="/css/custom.css">
+    # 时光问候卡片（日历 / 时钟 / 节假日 / IP 归属）
+    - <link rel="stylesheet" href="/css/aside-clock.css">
+    # 音乐馆
+    - <link rel="stylesheet" href="/css/music-hall.css">
+    # 移动端独立设计（放在最后，确保能覆盖前面的规则）
+    - <link rel="stylesheet" href="/css/mobile.css">
+    # 背景方案（优先级：动漫随机图 > 视频 > 星屑粒子）
+    # animeBg:true 时每次打开页面从网上随机拉一张动漫图作整页背景（换页/刷新会变）。
+    #   - 若想改图源，改下面 animeSources 里的地址即可（多个会逐个尝试，第一个成功的生效）。
+    #   - 想回到原来的粒子星空背景，把 animeBg 改成 false。
+    # 视频背景：把视频放到 source/video/bg.mp4 并把 video/videoMobile 改回路径，会覆盖动漫图生效。
+    - <script>window.BLOG_CFG={video:"",videoMobile:"",poster:"/img/top-bg.svg",particles:true,videoMobileEnabled:false,animeBg:true,animeSources:["https://www.dmoe.cc/random.php","https://api.mtyqx.cn/api/random.php","https://api.paugram.com/wallpaper/"]};</script>
+  bottom:
+    # 公共基础：内联 SVG 图标、节假日数据
+    - <script defer src="/js/icons.js"></script>
+    - <script defer src="/js/holiday-data.js"></script>
+    # 时光问候卡片
+    - <script defer src="/js/aside-clock.js"></script>
+    # 移动端底部 Tab 导航
+    - <script defer src="/js/mobile-tabbar.js"></script>
+    # 音乐馆（只在 /music 页面运行时才去加载 APlayer）
+    - <script defer src="/js/music-hall.js"></script>
+    - <script defer src="/js/custom.js"></script>
+    # Sakana 石蒜模拟器立牌（不想用就把这三行注释掉）
+    - <div class="sakana-box"></div>
+    - <script defer src="/js/sakana.min.js"></script>
+    - <script defer src="/js/sakana-init.js"></script>
+
+# ---------- 字数统计 ----------
+wordcount:
+  enable: true
+  post_wordcount: true
+  min2read: true
+  total_wordcount: true
+
+# ---------- 右键菜单 ----------
+right_menu:
+  enable: true

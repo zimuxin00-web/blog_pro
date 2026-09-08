@@ -1,0 +1,194 @@
+/* ==========================================================
+ *  移动端独立设计  (≤768px)
+ *  目标：把博客变成"App 感"的独立体验，而不是缩小的网页
+ *  桌面端完全不受影响
+ * ========================================================== */
+
+/* ---------- 移动端让问候卡片可见 ----------
+   主题在 992px 以下隐藏了 #aside-content，但日历/节假日/IP 问候是核心信息
+   重新以横幅形式放在文章正文末尾 */
+@media screen and (max-width: 992px) {
+  #aside-content { display: block !important; margin: 1.2rem 0 0; padding: 0; }
+  #aside-content > *:not(.aside-clock-card) { display: none !important; }
+  .aside-clock-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    background: var(--anzhiyu-card-bg, #fff);
+    border-radius: 12px;
+    box-shadow: var(--anzhiyu-shadow-border, 0 4px 16px rgba(0,0,0,0.04));
+    padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  /* 移动端隐藏右侧浮动按钮组（与底部 Tab 栏重复） */
+  #rightside { display: none !important; }
+
+  /* ---------- 一、底部 Tab 导航 ---------- */
+  #mobile-tabbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 900;
+    display: flex;
+    align-items: stretch;
+    height: calc(54px + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background: rgba(255, 255, 255, 0.86);
+    backdrop-filter: saturate(180%) blur(16px);
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    border-top: 1px solid rgba(128, 128, 140, 0.14);
+    box-shadow: 0 -2px 14px rgba(0, 0, 0, 0.06);
+  }
+
+  #mobile-tabbar .mt-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    text-decoration: none;
+    color: var(--anzhiyu-text, #4c4948);
+    opacity: 0.55;
+    transition: opacity 0.2s, color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+  }
+
+  #mobile-tabbar .mt-item > svg { width: 21px; height: 21px; display: block; }
+
+  #mobile-tabbar .mt-label {
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0.2px;
+  }
+
+  #mobile-tabbar .mt-item.on {
+    opacity: 1;
+    color: var(--anzhiyu-main, #8a7ffb);
+  }
+
+  /* 选中态顶部小圆点 */
+  #mobile-tabbar .mt-item.on::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--anzhiyu-main, #8a7ffb);
+  }
+
+  /* ---------- 二、给 Tab 栏让出空间 ---------- */
+  body { padding-bottom: calc(54px + env(safe-area-inset-bottom)); }
+
+  #content-inner,
+  .page,
+  .post {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  /* ---------- 三、避让：主题右下角按钮组 & 左下角立牌 ---------- */
+  #rightside {
+    bottom: calc(66px + env(safe-area-inset-bottom)) !important;
+  }
+
+  /* 缩放由 sakana-init.js 控制，这里只抬高位置，不要再写 transform 否则会叠加缩放 */
+  .sakana-box {
+    bottom: calc(66px + env(safe-area-inset-bottom)) !important;
+    z-index: 80;
+  }
+
+  /* ---------- 四、卡片：更大圆角，更紧凑 ---------- */
+  #recent-posts > .recent-post-item,
+  .card-widget,
+  .post .post-content,
+  #page .page-content,
+  #archive .article-sort-item {
+    border-radius: 14px;
+  }
+
+  #recent-posts > .recent-post-item {
+    padding: 0.8rem;
+    margin-bottom: 0.8rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  /* ---------- 五、排版：手机上更好读 ---------- */
+  #content-inner {
+    font-size: 15.5px;
+    line-height: 1.85;
+  }
+
+  .post h1.title,
+  #page h1.page-title {
+    font-size: 1.4rem;
+  }
+
+  #content-inner h2 { font-size: 1.2rem; }
+  #content-inner h3 { font-size: 1.08rem; }
+
+  #content-inner img {
+    border-radius: 10px;
+    max-width: 100%;
+  }
+
+  /* 代码块横向滚动，不撑破页面 */
+  #content-inner pre,
+  #content-inner .highlight {
+    border-radius: 10px;
+    font-size: 13px;
+  }
+
+  /* ---------- 六、首页 banner 适配 ---------- */
+  #page-header {
+    min-height: 42vh;
+  }
+
+  #page-header #site-title { font-size: 1.9rem; }
+
+  /* ---------- 七、侧边栏：手机上排在内容后面 ---------- */
+  #aside-content .card-widget {
+    margin-bottom: 0.8rem;
+  }
+
+  /* 时光问候卡片在手机上横向铺开更像 App */
+  #aside-clock-card .ac-card,
+  #aside-clock-card {
+    padding: 0.9rem 1rem 1rem;
+  }
+
+  /* ---------- 八、导航菜单：手机上收得更紧 ---------- */
+  #nav .menus_items > .menus_item > .menus_item_child {
+    border-radius: 12px;
+  }
+
+  /* ---------- 九、返回顶部等悬浮元素不要挡住 Tab ---------- */
+  #page-header.nav-fixed #nav { box-shadow: none; }
+
+  /* ---------- 十、音乐馆：全屏沉浸（细节在 music-hall.css） ---------- */
+  #music-hall { box-shadow: none; }
+}
+
+/* ---------- 深色模式下的 Tab 栏 ---------- */
+html[data-theme="dark"] #mobile-tabbar {
+  background: rgba(28, 28, 34, 0.88);
+  border-top-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -2px 14px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- 尊重系统「减少动态效果」 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  #mobile-tabbar { backdrop-filter: none; -webkit-backdrop-filter: none; }
+  #mobile-tabbar .mt-item { transition: none; }
+}
+
+/* ---------- 平板（769–1024）只做轻微收紧，不启用 Tab 栏 ---------- */
+@media screen and (min-width: 769px) {
+  #mobile-tabbar { display: none; }
+}

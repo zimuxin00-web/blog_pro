@@ -1,0 +1,401 @@
+/* ==========================================
+   自定义样式：全屏动态背景 + 响应式 + 美化
+   部署后可直接改这个文件，无需重新生成主题
+   ========================================== */
+
+:root {
+  --bg-mask-light: rgba(255, 255, 255, .55);
+  --bg-mask-dark: rgba(18, 18, 26, .62);
+  --radius-card: 16px;
+}
+
+/* ---------- 全屏动态背景 ---------- */
+#web_bg {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  overflow: hidden;
+  background: linear-gradient(160deg, #e8e6ff 0%, #f6f2ff 45%, #eaf6ff 100%);
+}
+
+[data-theme="dark"] #web_bg {
+  background: linear-gradient(160deg, #1b1a2e 0%, #232140 50%, #191827 100%);
+}
+
+.bg-video {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.bg-video.is-ready {
+  opacity: 1;
+}
+
+.bg-particles {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* 动漫随机背景层：图片铺满，淡入显示；由 custom.js 从网上随机拉一张 */
+.bg-anime {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  pointer-events: none;
+}
+
+.bg-anime.is-ready {
+  opacity: 1;
+}
+
+/* 动漫图偏亮时再压一层深色，确保浅色/深色下文字都清楚 */
+[data-theme="light"] #web_bg.has-anime::after {
+  background: var(--bg-mask-light);
+}
+
+[data-theme="dark"] #web_bg.has-anime::after {
+  background: var(--bg-mask-dark);
+}
+
+/* 遮罩层：保证文字在任何画面上都读得清 */
+#web_bg::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--bg-mask-light);
+  pointer-events: none;
+}
+
+[data-theme="dark"] #web_bg::after {
+  background: var(--bg-mask-dark);
+}
+
+/* 视频/粒子加载失败时的兜底：柔和光斑 */
+#web_bg.is-fallback {
+  background:
+    radial-gradient(1000px 600px at 15% 10%, #d9d3ff 0%, transparent 60%),
+    radial-gradient(800px 500px at 85% 20%, #cfe8ff 0%, transparent 60%),
+    linear-gradient(160deg, #f2efff 0%, #eef7ff 100%);
+}
+
+[data-theme="dark"] #web_bg.is-fallback {
+  background:
+    radial-gradient(1000px 600px at 15% 10%, #2f2a52 0%, transparent 60%),
+    radial-gradient(800px 500px at 85% 20%, #243b55 0%, transparent 60%),
+    linear-gradient(160deg, #1b1a2e 0%, #191827 100%);
+}
+
+/* ---------- 首页 banner 文字可读性 ---------- */
+#page-header,
+.home-top-group,
+#home_top {
+  position: relative;
+}
+
+#page-header::before,
+#home_top::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, .12), rgba(0, 0, 0, .38));
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+#page-header #site-title,
+#page-header .site-title {
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .45);
+}
+
+/* 打字机光标更明显 */
+#subtitle,
+.subtitle {
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .35);
+}
+
+/* ---------- 卡片与排版美化 ---------- */
+#recent-posts > .recent-post-item,
+.card-widget,
+.post-block,
+.author-content-item {
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
+#recent-posts > .recent-post-item:hover {
+  transform: translateY(-4px);
+}
+
+.post img,
+#article-container img {
+  border-radius: 12px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* 代码块 */
+#article-container figure.highlight,
+#article-container pre {
+  border-radius: 12px;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(138, 127, 251, .45);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 长表格在窄屏可横向滑动 */
+#article-container table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+@media (min-width: 769px) {
+  #article-container table {
+    display: table;
+    white-space: normal;
+  }
+}
+
+/* ---------- 平板 ---------- */
+@media (max-width: 1024px) {
+  #sidebar,
+  #aside-content {
+    display: none;
+  }
+
+  .layout > div:first-child {
+    width: 100% !important;
+  }
+}
+
+/* ---------- 手机 ---------- */
+@media (max-width: 768px) {
+  .bg-video {
+    display: none;      /* 手机默认不加载视频，省流量省电 */
+  }
+
+  #page-header,
+  #home_top {
+    min-height: 42vh;
+  }
+
+  #site-title,
+  #page-header .site-title {
+    font-size: 1.6rem;
+  }
+
+  #subtitle {
+    font-size: .95rem;
+  }
+
+  #recent-posts > .recent-post-item {
+    margin-bottom: 12px;
+    border-radius: 12px;
+  }
+
+  .recent-post-item .post_cover {
+    width: 100%;
+    height: 180px;
+  }
+
+  #article-container {
+    font-size: 15px;
+    line-height: 1.85;
+  }
+
+  #article-container h1 { font-size: 1.5rem; }
+  #article-container h2 { font-size: 1.3rem; }
+  #article-container h3 { font-size: 1.15rem; }
+
+  /* 手机上关掉重特效，保帧率 */
+  #article-container img,
+  .card-widget {
+    transition: none !important;
+  }
+
+  #recent-posts > .recent-post-item:hover {
+    transform: none;
+  }
+}
+
+/* ---------- 随便逛逛入口：纸飞机/骰子/指南针小图标换成动漫人物 ----------
+   把首页 banner 中央 #random-hover 里的纸飞机、#randomPost_button 右上角骰子、
+   导航子菜单的指南针统一替换成人物圆头像。
+   想换别的动漫人物，把 url 换成 /img/ 下的其它图片即可。 */
+
+/* banner 中央：纸飞机 -> 圆形人物头像（保持原 80px 字号位置，居中显示）
+   主题默认 #random-hover opacity:0（只在 hover 时显示），改成半透明常驻 + peoplecanvas 同步降级避免冲突 */
+#random-hover {
+  opacity: 0.4 !important;
+  transition: opacity .35s ease !important;
+}
+/* 鼠标 hover banner 时让"随便逛逛"完全显示 */
+#random-banner:hover #random-hover {
+  opacity: 1 !important;
+}
+/* peoplecanvas 作为底层：让它绝对铺满但 z-index 较低，避免遮挡 #random-hover */
+#random-banner > #peoplecanvas {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+}
+/* "随便逛逛" 上浮到 peoplecanvas 之上 */
+#random-banner > #random-hover {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 10 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding-left: 0 !important;
+  text-align: center !important;
+  gap: 12px;
+}
+#random-hover > i.anzhiyu-icon-paper-plane {
+  font-size: 0 !important;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: url('/img/avatar_yae.png') center / cover no-repeat no-repeat;
+  background-size: cover;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .55), 0 4px 12px rgba(0, 0, 0, .25);
+  transition: transform .4s ease;
+  margin: 0 auto !important;
+  line-height: 1 !important;
+}
+#random-hover:hover > i.anzhiyu-icon-paper-plane {
+  transform: rotate(-12deg) scale(1.08);
+}
+/* bannerText 里的右箭头同样替换为人物头像小圆 */
+#random-hover .bannerText > i.anzhiyu-icon-arrow-right {
+  font-size: 0 !important;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: url('/img/avatar_yae.png') center / cover no-repeat no-repeat;
+  background-size: cover;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+/* 右上角随机按钮：骰子 -> 圆形人物头像 */
+#randomPost_button a i.anzhiyu-icon-dice,
+#randomPost_button a i.anzhiyu-icon-paper-plane {
+  font-size: 0 !important;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: url('/img/avatar_yae.png') center / cover no-repeat no-repeat;
+  background-size: cover;
+  vertical-align: middle;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, .55);
+  transition: transform .3s ease;
+}
+
+#randomPost_button a:hover i.anzhiyu-icon-dice,
+#randomPost_button a:hover i.anzhiyu-icon-paper-plane {
+  transform: rotate(12deg) scale(1.08);
+}
+
+/* 顶部导航菜单子项里的"随便逛逛"：指南针 -> 圆形人物头像 */
+#menus a[href="javascript:toRandomPost()"] > i {
+  font-size: 0 !important;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: url('/img/avatar_yae.png') center / cover no-repeat no-repeat;
+  background-size: cover;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 3px;
+}
+
+/* ---------- Sakana 立牌 ----------
+   放左下角：安知鱼右下角有按钮组，放那边会打架
+   想挪回右下角就把 left:0 改成 right:0，并把 transform-origin 改成 100% 100% */
+.sakana-box {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  transform-origin: 0 100%;
+  z-index: 99;
+  opacity: .96;
+  transition: opacity .3s ease;
+}
+
+.sakana-box:hover {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .sakana-box {
+    opacity: .9;
+  }
+}
+
+/* 打印和"减少动效"时藏起来 */
+@media print {
+  .sakana-box {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sakana-box {
+    display: none;
+  }
+}
+
+/* ---------- 尊重系统的"减少动态效果"设置 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .bg-video,
+  .bg-particles {
+    display: none;
+  }
+
+  * {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
